@@ -1,0 +1,222 @@
+Object Oriented Programming Course
+Homework - VideosDB
+
+November 2020
+
+# Info
+https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/tema
+https://github.com/daniela-becheanu/POO--tema1
+
+# About the code
+* src
+    * action - classes for applying the methods for commands, queries and
+        reommendations
+    * compare - classes used for comparison
+    * contain - classes used to verify if an actor has in his descrption
+        certain awards/words
+    * convert - classes used to copy some needed fields of other classes,
+        for easier usage
+
+* tasks
+    * Firstly, the input is gone through to check for the action type, then
+        the corresponding user is searched fo and after that the type/object
+        type is checked and the Criterion, if needed
+    * Commands
+        * Favorite - the title of a movie/serial is added in the
+            favoriteMovies ArrayList if the conditions are met and the
+            correponsing message is returned (using the method addFavorite
+            implemented in UserInputData)
+        * View - similar to addFavorite, but the title is added in a Map,
+            (with the number of views equal to 1) if it was not already seen
+            or, if the Map already contained that title, the value of the key
+            (title) is increased by 1. A correponding message is returned,
+            containing the key (title) and value (number of views) of that
+            movie (using the method addView implemented in UserInputData)
+        * Rating - the Command class is used, calling the method addRating from
+                either Movie class, or Serial class (static nested classes)
+            * Movie - checks is the movie is seen and in affirmative case, it
+                calls addRating from MovieInputData class to add a rating in
+                the ratings ArraList, used to store all the ratings of a movie
+                (only if it was not already rated). The corresponding message
+                is returned
+            * Serial - Similar to the method in movie class, but thie time the
+                user can rate only a season of the serial. For that, the string
+                containing the serial title + " - season" + seasonNumber is
+                created, which will be added in the ratedMvoies ArrayList to
+                store the title alongside the number of the season, where it is
+                checked if that season of the serial was already rated. Then,
+                the addRating method from SerialInputData is called to
+                store the ratings in the ArrayList of ratings from every
+                season. Also, the corresponding message is returned.
+    * Queries - class Query is used, with its static nested classes (Actors - 
+        procces the queries for actors, Videos - for videos (with static nested
+        classes - Movies and Serials) and Users - for users)
+        * Actors
+            * An ArrayList<Actor> list is created in all the following methods,
+                to copy only the important fields from the actors (the ones
+                that are used for sorting)
+            * sort method, which returns the message that needs to pe appended
+                to the output file; it sorts in ascending/descnding order the
+                ArrayList of actors formed in every follwing method, using the
+                CompareActors class, which implements Comparator, to compare by
+                the first Criterion given and the actor's name; the min variable
+                is used to take de minimum number of the elements list and the
+                number given in input for the action, so that if the number of
+                responses is lower than the one given in the action, all of
+                them will be added to the returned message
+            * Average - sortActorsAverage from the Actors class is used, which
+                takes the input list of actors and filters, taking only the
+                actors that have a positive grade (rating), computed using the
+                method computeGrade from ActorInputData class, which returns
+                the mean of all the movies and serials he played in; the actors
+                are sorted by their name and their grade (these ones are added
+                in the actors ArrayList), then sorted using sort method
+            * Awards - sortActorsAwards method from the Actors class is used,
+                which uses the ContainsAwards class which implements Predicate
+                to filter the actors who have all the awards needed in their
+                description; the number of awards of every actor is computed by
+                going through the actor's awards Map and adding up the values
+                of the keys; the actors are sorted by their name and their
+                number of awards (these ones are added as fields for the Actor
+                object that is added int the ArrayList), then sorted using sort
+                method
+            * Filter Description - sortActorsFilter method from the Actors
+                class is used, which firstly sets all the actors' description
+                to lowercase for easier traversal and the signs to space, then
+                uses the ContainsWords class which implements Predicate to
+                filter the actors who have all the keywords in their
+                description; the actors are sorted only by lexicographic order.
+                that's why the second field added in the Actor object added in
+                the ArrayList is set to 0; then the actors are sorted in
+                ascending/descending order using the sort method already
+                detailed
+        * Videos
+            * Movies, Serials - static nested classes used, depending on the
+                object type of the query
+            * Similar to the Actors class, there is an ArrayList<Video>, where
+                Video class is used to copy only the important fields from the
+                movies/serials, which differ from category to category
+            * sort method returns the message that needs to be appended to the
+                file; it sorts in ascending/descending order the
+                ArrayList of actors formed in every follwing method, using the
+                CompareVideos class, which implements Comparator, to compare
+                by three Criteria given; the min variable has the same meaning
+                as the one in the sort method from the Actors class
+            * moviesFiltered/serialsFiltered are methods that filter the
+                movies/serials given in input, considering the given filters
+                (year, genre); all the following methods use moviesFiltered/
+                serialsFiltered as a first step
+            * Rating
+                * Movies - sortRating method from Movies is used, which, after
+                    the filters are applied, applies another filter to take in
+                    consideration only the movies that have a positive grade,
+                    computed with the computeGrade method from MovieInputData
+                    class, which computes the mean of all the ratings given to
+                    that movie; in the videos ArrayList there are added videos
+                    with the grade as the firstCriterion and the title as the
+                    third (the secondCriterion field is set to 0); then the
+                    videos are sorted
+                * Serials - sortRating method from Serials is used, which is
+                    similar to the one from Movies, but the computeGrade method
+                    from SerialInputDataClass computes the mean of the grades
+                    of the serial as the mean of the means of grades of their
+                    seasons
+            * Favorite
+                * Movies - sortFavorite method from Movies is used, which,
+                    after the filters are applied, computes the number of
+                    occurrences of a movie in users' favoriteMovies lists
+                    (favoriteNo), then applies another filter to get only the
+                    movies with favoriteNo grater than 0; in the videos
+                    ArrayList there are added the videos with the firstCriterion
+                    equal to 0, secondCriterion as favoriteNo, and thirdCriterion
+                    as the title, to sort them in the needed order, using sort
+                    method
+                * Serials - sortFavorite method from Serials is used, which is
+                    similar to the one in the Movies class
+            * Longest
+                * Movies - sortLongest method from Movies is used, which, after
+                    the filters are applied, adds in the videos Arraylist
+                    videos that have the duration and title as secondCriterion
+                    and thirdCriterion, the firstCriterion field being 0
+                * Serials - sortLongest method from Serials is used, which is
+                    similar to the one in the Movies class
+            * Most Viewed
+                * Movies - sortMostViewed method from Movies is used, which
+                    computes the number of views of every movie and increases
+                    the field views from MovieInputData with the value of it
+                    in the history Map, when it is found in a user's history,
+                    then filters the movies with a positive number of views
+                    and adds them in the videos ArrayList with the number of
+                    views and title as secondCriterion and thirsCriterion, the
+                    firstCriterion being 0
+                * Serials - sortMostViewed method from Serials is used, which
+                    is similar to the one in the Movie class
+        * Users
+            * sort method returns the message that needs to be appended to the
+                file; it sorts in ascending/descending order the
+                ArrayList of users, using the Compare class, which implements
+                Comparator, to compare by three Criteria given; the min
+                variable has the same meaning as the ones in the sort method
+                from previous classes
+            * Number of Ratings - sortRatingsNo method is used, which filters
+                the users with a positive number of reviews (this number is
+                actually the size of the user's ratedMovies list), the uses the
+                sort method already detailed
+    * Recommendations
+        * static nested classes: BasicUser, PremiumUser
+        * notSeen is a method that returns an ArrayList<ShowInput> (ShowInput
+            being a class extended bu both MovieInputData and SerialInputData
+            classes), that checks if the history of a user contains the title
+            of the movie/serial and returnes the movies and serials that have
+            not been seen by the user
+        * all the following methods will return a message that says
+            "XRecommendation cannot be applied!" if there is no video to be
+            returned
+        * Basic Users
+            * Standard - standard method is used, which finds the first video
+                in the database that has not been seen by the user by searching
+                in the movies and serials list given and checking if the
+                current movie/serial has been seen; the first one found unseen
+                is returned
+            * BestUnseen - bestUnseen method is used, which adds videos in the
+                ArrayList<Video> videos, with the firstCriterion field as the
+                opposite of their grade (because it has to be sorted in
+                descnding order, and CompareVideos sorts in ascending order),
+                the secondCriterion field as the index in the database and the
+                thirdCriterion fields "", because the lexicographic order
+                doesn't matter in this case; then the title of the first element
+                in the sorted ArrayList is written in the message that is
+                returned
+        * Premium Users - if the user's subsctription type is not PREMIUM, the
+            "XRecommendation cannot be applied!" message is returned
+            * Popular - popular method is used, which uses a HashMap with
+                a String as key and an Integer as its value, which will contain
+                all the genres and the opposit of the number of videos with
+                that genre; this HasMmap is obtained by searching in the genres
+                list of all the movies and serials and, when a genre is new, it
+                is added with the value -1, and if the Map already contained it
+                the value is decreased by 1; because of this, when the HashMap
+                is sorted, it contains de genres in descending order of their
+                values (actually ascending order of the opposite of their
+                values), the the sorted HashMap is being searched through and
+                when it is searched in the movies and serials ArrayLists, when
+                one which has the most popular genre and was not seen is fount,
+                it is returned
+            * Favorite - favorite method is used, which computes the number of
+                occurrences in users's favorite lists of every video, then, in
+                the videos Arraylist (which the notSeen method has been applied
+                on) adds the opposite of favNo as the first criterion (because
+                it needs to be in descending order of this criterion), the
+                secondCriterion field is the index in the database, and the
+                thirdCriterion field is "", because the lexicographic order
+                doesn't matter; finally, the video is sorted and the first
+                video in the videos ArrayList is returned
+            * Search - search method is used, which takes all the videos not
+                seen by the user (using the notSeen method) and filters them
+                to obtain the ones that have the corresponding genre in their
+                genre list; then, using the movies/serials from notSeen
+                ArrayList, the videos ArrayList is created, using as the
+                firstCriterion field the grade, secondCriterion field 0 and the
+                thirdCriterion field the title of the movie/serial, because
+                lexicographic order matters this time, then it is sorted;
+                finally, the first element is returned
