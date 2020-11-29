@@ -1,0 +1,73 @@
+package entertainment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Information about a season of a tv show
+ * <p>
+ * DO NOT MODIFY
+ */
+public final class Season {
+    /**
+     * Number of current season
+     */
+    private final int currentSeason;
+    /**
+     * Duration in minutes of a season
+     */
+    private int duration;
+    /**
+     * List of ratings for each season
+     */
+    private List<Double> ratings;
+
+    public Season(final int currentSeason, final int duration) {
+        this.currentSeason = currentSeason;
+        this.duration = duration;
+        this.ratings = new ArrayList<>();
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(final int duration) {
+        this.duration = duration;
+    }
+
+    public List<Double> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(final List<Double> ratings) {
+        this.ratings = ratings;
+    }
+    /**
+     * Computes mean of ratings of this season
+     *
+     * @return the mean of this season
+     */
+    public double getMeanRatings() {
+        if (ratings.size() == 0) {
+            return 0;
+        }
+
+        double sum = 0;
+        for (Double d : ratings) {
+            sum += d;
+        }
+
+        return sum / ratings.size();
+    }
+    @Override
+    public String toString() {
+        return "Episode{"
+                + "currentSeason="
+                + currentSeason
+                + ", duration="
+                + duration
+                + '}';
+    }
+}
+
